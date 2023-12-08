@@ -8,16 +8,16 @@ import {
   unarchiveNote,
 } from "@/lib/note-utils";
 import PropTypes from "prop-types";
-import { Typography, Input } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import { useSearchParams } from "react-router-dom";
-import { SearchIcon } from "lucide-react";
+import SearchInput from "./search-input";
 
 export default function NotesList({ archived = false }) {
   const getNoteFn = archived ? getArchivedNotes : getActiveNotes;
 
   const [notes, setNotes] = useState(getNoteFn);
   const [searchParams, setSearchParams] = useSearchParams();
-  const search = searchParams.get("search");
+  const search = searchParams.get("search") ?? "";
 
   const filterNoteByTitle = useCallback(
     (filter) =>
@@ -47,19 +47,7 @@ export default function NotesList({ archived = false }) {
 
   return (
     <div className="space-y-4">
-      <Input
-        label="Search note"
-        size="lg"
-        className="text-foreground"
-        color="blue"
-        defaultValue={search}
-        labelProps={{
-          className:
-            "text-blue-gray-500 after:!border-accent peer-focus:!text-accent-foreground peer-focus:after:!border-accent-foreground",
-        }}
-        icon={<SearchIcon />}
-        onChange={onSearchChange}
-      />
+      <SearchInput keyword={search} onChange={onSearchChange} />
       <div className="w-full mb-4 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {notes.length > 0 ? (
           notes.map((note) => (
