@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import UnderlineTabsNav from "./components/underline-tabs-nav";
+import NotesPage from "./pages/notes-page";
+import ArchivePage from "./pages/archive-page";
+import AddNotePage from "./pages/add-note-page";
+import NoteDetailsPage from "./pages/note-details-page";
+import NotFoundPage from "./pages/not-found-page";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="w-full h-full min-h-screen flex flex-col bg-background">
+      <UnderlineTabsNav />
+      <main className="mt-4 flex-1 container">
+        <Routes>
+          <Route index path="/" element={<NotesPage tests={["asd"]} />} />
+          <Route path="/archive" element={<ArchivePage />} />
+          <Route path="/new" element={<AddNotePage />} />
+          <Route path="/details/:id" element={<NoteDetailsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+      <Toaster position="bottom-right" reverseOrder={false} />
+    </div>
+  );
 }
 
-export default App
+export default App;
