@@ -13,7 +13,7 @@ function App() {
       <UnderlineTabsNav />
       <main className="mt-4 flex-1 container">
         <Routes>
-          <Route index path="/" element={<NotesPage tests={["asd"]} />} />
+          <Route index path="/" element={<NotesPage />} />
           <Route path="/archive" element={<ArchivePage />} />
           <Route path="/new" element={<AddNotePage />} />
           <Route path="/details/:id" element={<NoteDetailsPage />} />
