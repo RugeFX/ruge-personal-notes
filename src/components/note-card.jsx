@@ -2,6 +2,7 @@ import { Card, CardBody, CardFooter, IconButton, Typography } from "@material-ta
 import { ArchiveIcon, ArchiveRestoreIcon, TrashIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import parser from "html-react-parser";
 import { dateStringToLocale } from "@/lib/utils";
 
 export default function NoteCard({ id, title, body, createdAt, archived, onArchive, onDelete }) {
@@ -20,7 +21,7 @@ export default function NoteCard({ id, title, body, createdAt, archived, onArchi
         <Typography variant="small" className="text-card-foreground/60">
           {dateStringToLocale(createdAt)}
         </Typography>
-        <Typography className="text-card-foreground">{body}</Typography>
+        <div className="text-card-foreground">{parser(body)}</div>
       </CardBody>
       <CardFooter className="pt-0 mt-auto w-full flex gap-2 justify-end">
         <IconButton

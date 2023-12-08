@@ -70,7 +70,7 @@ export default function NoteDetailsPage() {
           </IconButton>
         </div>
       </div>
-      <Typography>{parser(note.body)}</Typography>
+      <article className="w-full prose-lg prose-invert">{parser(note.body)}</article>
     </div>
   );
 }

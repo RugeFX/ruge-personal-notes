@@ -16,7 +16,7 @@ export default function AddNotePage() {
   };
 
   const onBodyInput = (e) => {
-    setBody(e.currentTarget.innerHTML);
+    setBody(e.currentTarget.innerText);
   };
 
   const onSaveClick = () => {
@@ -42,6 +42,7 @@ export default function AddNotePage() {
           variant="static"
           label="Title"
           size="lg"
+          placeholder="Your title..."
           className="!text-3xl text-foreground !font-bold"
           labelProps={{
             className:
@@ -54,11 +55,12 @@ export default function AddNotePage() {
           <div
             id="body"
             role="textbox"
-            className="peer w-full h-full min-h-[24rem] text-2xl font-normal tracking-wide border-b border-blue-gray-200 outline-none focus:border-foreground transition-colors"
+            className={`peer w-full h-full min-h-[24rem] text-2xl font-normal tracking-wide border-b border-blue-gray-200 outline-none focus:border-foreground transition-colors before:text-gray-400 before:content-[attr(data-placeholder)] ${
+              body ? "before:hidden" : "before:block"
+            }`}
             aria-label="body"
-            data-placeholder="Body"
+            data-placeholder="Your note..."
             contentEditable
-            content={body}
             onInput={onBodyInput}
           />
           <Typography

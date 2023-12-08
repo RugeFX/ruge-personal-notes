@@ -5,7 +5,7 @@ import NotesList from "@/components/notes-list";
 
 export default function NotesPage() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mb-4">
       <Typography variant="h1" className="text-2xl mb-4">
         Notes
       </Typography>
