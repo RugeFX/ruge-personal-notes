@@ -1,4 +1,4 @@
-export function dateStringToLocale(dateStr) {
+export function dateStringToLocale(locale, dateStr) {
   const options = {
     weekday: "long",
     year: "numeric",
@@ -6,5 +6,5 @@ export function dateStringToLocale(dateStr) {
     day: "numeric",
   };
 
-  return new Date(dateStr).toLocaleDateString("id-ID", options);
+  return new Date(dateStr).toLocaleDateString(locale, options);
 }

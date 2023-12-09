@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import parser from "html-react-parser";
 import { dateStringToLocale } from "@/lib/utils";
+import { useLocaleContext } from "@/contexts/locale-context";
 
 export default function NoteCard({ id, title, body, createdAt, archived, onArchive, onDelete }) {
+  const { locale } = useLocaleContext();
+
   return (
     <Card className="w-full bg-card border border-accent hover:border-primary hover:bg-accent/20 transition-colors">
       <CardBody>
@@ -13,13 +16,12 @@ export default function NoteCard({ id, title, body, createdAt, archived, onArchi
           as={Link}
           to={`/details/${id}`}
           variant="h5"
-          color="white"
-          className="hover:underline"
+          className="text-foreground hover:underline"
         >
           {title}
         </Typography>
         <Typography variant="small" className="text-card-foreground/60">
-          {dateStringToLocale(createdAt)}
+          {dateStringToLocale(locale === "id" ? "id-ID" : "en-US", createdAt)}
         </Typography>
         <div className="text-card-foreground">{parser(body)}</div>
       </CardBody>

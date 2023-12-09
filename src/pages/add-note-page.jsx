@@ -1,48 +1,57 @@
-import { addNote } from "@/lib/note-utils";
-import { Button, Input, Typography } from "@material-tailwind/react";
+import { addNote } from "@/api/notes";
+import { useLocaleContext } from "@/contexts/locale-context";
+import useInput from "@/hooks/use-input";
+import { actions, add_note, invalid_inputs } from "@/lib/localized-content";
+import { Button, Input, Spinner, Typography } from "@material-tailwind/react";
 import { CheckIcon } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function AddNotePage() {
-  const [title, setTitle] = useState("");
+  const { locale } = useLocaleContext();
+  const [title, onTitleChange] = useInput("");
   const [body, setBody] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-
-  const onTitleChange = (e) => {
-    setTitle(e.currentTarget.value);
-  };
 
   const onBodyInput = (e) => {
     setBody(e.currentTarget.innerText);
   };
 
-  const onSaveClick = () => {
+  const onSaveClick = async () => {
     if (title === "" || body === "") {
-      toast.error("Please fill in the inputs first!", {
-        position: "bottom-right",
-      });
+      toast.error(invalid_inputs[locale]);
       return;
     }
 
-    toast.success("Successfully added note!", { position: "bottom-right" });
-    addNote({ title, body });
+    setIsLoading(true);
+
+    const { error, data } = await addNote({ title, body });
+
+    if (error) {
+      toast.error(`${actions[locale].add.fail}, ${data}`);
+      setIsLoading(false);
+      return;
+    }
+
+    toast.success(`${actions[locale].add.success}`);
+    setIsLoading(false);
     navigate("/");
   };
 
   return (
     <>
       <Typography variant="h1" className="text-2xl mb-4">
-        Add a new Note
+        {add_note[locale].heading}
       </Typography>
       <div className="space-y-4">
         <Input
           variant="static"
-          label="Title"
+          label={add_note[locale].title.label}
           size="lg"
-          placeholder="Your title..."
+          placeholder={add_note[locale].title.placeholder}
           className="!text-3xl text-foreground !font-bold"
           labelProps={{
             className:
@@ -59,7 +68,7 @@ export default function AddNotePage() {
               body ? "before:hidden" : "before:block"
             }`}
             aria-label="body"
-            data-placeholder="Your note..."
+            data-placeholder={add_note[locale].body.placeholder}
             contentEditable
             onInput={onBodyInput}
           />
@@ -69,7 +78,7 @@ export default function AddNotePage() {
             htmlFor="body"
             className="text-blue-gray-500 peer-focus:text-white transition-colors"
           >
-            Body
+            {add_note[locale].body.label}
           </Typography>
         </div>
         <div className="w-full flex justify-end">
@@ -79,9 +88,14 @@ export default function AddNotePage() {
             color="blue"
             className="group relative flex items-center gap-3 overflow-hidden pl-[72px]"
             onClick={onSaveClick}
+            disabled={isLoading}
           >
-            Save
-            <CheckIcon className="p-3 w-12 h-full absolute left-0 grid place-items-center bg-blue-600 transition-colors group-hover:bg-blue-700" />
+            {add_note[locale].save}
+            {isLoading ? (
+              <Spinner className="p-3 w-12 h-full absolute left-0 grid place-items-center" />
+            ) : (
+              <CheckIcon className="p-3 w-12 h-full absolute left-0 grid place-items-center bg-blue-600 transition-colors group-hover:bg-blue-700" />
+            )}
           </Button>
         </div>
       </div>
