@@ -7,7 +7,11 @@ export function LocaleProvider({ children }) {
   const [locale, setLocale] = useState(() => localStorage.getItem("locale") || "id");
 
   const toggleLocale = () => {
-    setLocale((prev) => (prev === "id" ? "en" : "id"));
+    setLocale((prev) => {
+      const next = prev === "id" ? "en" : "id";
+      localStorage.setItem("locale", next);
+      return next;
+    });
   };
 
   const value = useMemo(
