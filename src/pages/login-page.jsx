@@ -24,12 +24,12 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const onLoginClick = async () => {
-    setIsLoading(true);
     if (email === "" || password === "") {
       toast.error(invalid_inputs[locale]);
       return;
     }
 
+    setIsLoading(true);
     await login({ email, password });
     setIsLoading(false);
   };
